@@ -9,6 +9,7 @@ class Dotfiler_init {
         // Admin classes
         require_once DOTFILER_BASE_URL.'/classes/admin/admin.class.php';
         require_once DOTFILER_BASE_URL.'/classes/admin/posttypes.class.php';
+        require_once DOTFILER_BASE_URL.'/classes/admin/authnet.class.php';
 
         // Authorize.net
         require_once DOTFILER_BASE_URL.'/classes/authnet/authnet.class.php';
