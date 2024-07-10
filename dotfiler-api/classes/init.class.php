@@ -3,12 +3,47 @@ class Dotfiler_init {
 
     public function __construct() {
 
-        require_once(DOTFILER_BASE_URL.'/classes/api.class.php');
-        require_once(DOTFILER_BASE_URL.'/classes/admin.class.php');
-        require_once(DOTFILER_BASE_URL.'/classes/posttypes.class.php');
-        require_once(DOTFILER_BASE_URL.'/classes/authnet.class.php');
+        // API class
+        require_once DOTFILER_BASE_URL.'/classes/dotfiler/api.class.php';
+        
+        // Admin classes
+        require_once DOTFILER_BASE_URL.'/classes/admin/admin.class.php';
+        require_once DOTFILER_BASE_URL.'/classes/admin/posttypes.class.php';
 
-        require_once(DOTFILER_BASE_URL.'/actions/ajax.php');
+        // Authorize.net
+        require_once DOTFILER_BASE_URL.'/classes/authnet/authnet.class.php';
+        require_once DOTFILER_BASE_URL.'/classes/authnet/authnet.refund.php';
+
+        // Ajax
+        require_once DOTFILER_BASE_URL.'/actions/ajax.php';
+
+        // Shortcodes
+        $this->include_shortcodes();
+
+        // Hooks
+        $this->include_hooks();
+
+    }
+
+    private function include_shortcodes() {
+
+        // Refund
+        require_once DOTFILER_BASE_URL.'/shortcodes/payment.refund.php';
+        require_once DOTFILER_BASE_URL.'/shortcodes/refund.history.php';
+        require_once DOTFILER_BASE_URL.'/shortcodes/charged.history.php';
+        require_once DOTFILER_BASE_URL.'/shortcodes/creds.history.php';
+
+        // Form handling with the API data
+        require_once DOTFILER_BASE_URL.'/shortcodes/form.results.php';
+        require_once DOTFILER_BASE_URL.'/shortcodes/form.results.mobile.php';
+        require_once DOTFILER_BASE_URL.'/shortcodes/form.errorblock.php';
+
+    }
+
+    private function include_hooks() {
+
+        // Formidable forms processing
+        require_once DOTFILER_BASE_URL.'/actions/formidable.php';
 
     }
 

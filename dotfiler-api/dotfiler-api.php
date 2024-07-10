@@ -8,15 +8,25 @@ Author URI:
 Author: Stanislav Matrosov
 */
 
-// We need it to work with Sessions
-add_action('init', 'start_session', 1);
-function start_session() {
-    if(!session_id()) {
-        @session_start();
-    }
-}
-
+// Variables
 define('DOTFILER_BASE_URL', __DIR__);
 
-// Init class
-require_once('classes/init.class.php');
+// Initialize core
+require_once 'classes/init.class.php';
+
+
+add_action('init', 'init44');
+function init44() {
+
+    if( $_GET['test'] ) {
+
+        
+
+        echo 123;
+
+        die();
+
+    }
+
+}
+

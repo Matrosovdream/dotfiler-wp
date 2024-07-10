@@ -5,8 +5,8 @@ function api_quick_test_javascript() {
 	<script>
 	jQuery(document).ready( function($) {
 
+        // EIN
         var ein_isset = jQuery('.ein-ajax').length;
-
         if( ein_isset > 0 ) {
 
             var data = {
@@ -33,6 +33,36 @@ function api_quick_test_javascript() {
 
         }
 
+
+        // OOS
+        var oos_isset = jQuery('.oos-ajax').length;
+        if( oos_isset > 0 ) {
+
+            var data = {
+                action: 'api_ajax_load_oos',
+                ein: jQuery("input[name='usdot']").val()
+            };
+
+            jQuery.post( '/wp-admin/admin-ajax.php', data, function( response ){
+
+                var val = response;
+                if( val ) {
+
+                    // Right sidebar
+                    jQuery('.oos-ajax').show();
+                    jQuery('.oos-ajax-val').html( val );
+
+                    // Hidden inputs
+                    //jQuery('input[name="item_meta[89]"]').val(val);
+                    //jQuery('input[name="item_meta[842]"]').val(val);
+
+                }
+
+            });
+
+        }
+
+
 	});
 	</script>
 	<?php
@@ -49,10 +79,25 @@ function api_ajax_load_ein_callback() {
     $result = $API->request_base();
     $data = $result['content']['carrier'];
 
-    //$data['ein'] = 555;
-
     if( isset( $data['ein'] ) ) {
         echo $data['ein'];
+    }
+    
+	wp_die();
+}
+
+add_action( 'wp_ajax_api_ajax_load_oos', 'api_ajax_load_oos_callback' );
+add_action( 'wp_ajax_nopriv_api_ajax_load_oos', 'api_ajax_load_oos_callback' );
+function api_ajax_load_oos_callback() {
+
+    $ein = $_POST['ein'];
+	
+    $API = new Dotfiler_api( $query=$ein );
+    $result = $API->request_oos();
+    $description = $result['oosReasonDescription'];
+
+    if( isset( $description ) ) {
+        echo $description;
     }
     
 	wp_die();
@@ -98,9 +143,15 @@ function frm_gateway_val( $value, $atts ) {
         $payment_info = $authnet->get_payment_by_id( $payment_item_id );
         $authnet_login_id = $payment_info->authnet_login_id;
 
-        if( $authnet_login_id ) {
-            $value .= " (<b>".$authnet_login_id."</b> account)";
+        if( !$authnet_login_id ) { return $value; }
+
+        if( $authnet_login_id == 'AUTHORIZENET_API_LOGIN_ID' ) {
+
+            $default_set = $authnet->get_creds_default();
+            $authnet_login_id = $default_set['login_id'];
         }
+
+        $value .= " (<b>".$authnet_login_id."</b> account)";
 
     }
 
