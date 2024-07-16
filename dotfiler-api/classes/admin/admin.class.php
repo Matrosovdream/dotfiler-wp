@@ -43,6 +43,7 @@ class Dotfiler_admin {
 
         register_setting('dotfiler_api_group', 'dotfiler_api');
         register_setting('dotfiler_api_group', 'saferweb_api_key');
+        register_setting('dotfiler_api_group', 'frm_remove_failed_entries');
 
         add_settings_section(
             'dotfiler_api_section',
@@ -67,11 +68,45 @@ class Dotfiler_admin {
             'dotfiler_api_section'
         );
 
+        add_settings_section(
+            'dotfiler_api_section',
+            'API Key Settings',
+            array($this, 'dotfiler_api_section_callback'),
+            'dotfiler_api_settings'
+        );
+    
+        // Add new settings section for Formidable entries
+        add_settings_section(
+            'formidable_entries_section',
+            'Formidable Entries Settings',
+            array($this, 'formidable_entries_section_callback'),
+            'dotfiler_api_settings'
+        );
+    
+        // Add new checkbox field for removing failed entries
+        add_settings_field(
+            'frm_remove_failed_entries',
+            'Remove Failed Entries',
+            array($this, 'frm_remove_failed_entries_callback'),
+            'dotfiler_api_settings',
+            'formidable_entries_section'
+        );
+
     }
 
     public function dotfiler_api_section_callback() {
         echo '<p>Enter your API key:</p>';
     }
+
+    public function formidable_entries_section_callback() {
+        //echo '<p>Formidable Entries Settings:</p>';
+    }
+    
+    public function frm_remove_failed_entries_callback() {
+        $value = get_option('frm_remove_failed_entries');
+        echo '<input type="checkbox" name="frm_remove_failed_entries" value="1" ' . checked(1, $value, false) . ' />';
+    }
+    
 
     public function dotfiler_api_callback() {
         $value = get_option('dotfiler_api');
