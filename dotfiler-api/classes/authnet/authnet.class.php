@@ -199,7 +199,31 @@ class Dotfiler_authnet {
 
     }
 
-    public function get_creds_default() {
+    public static function insert_transaction( $values ) {
+
+        // If it's empty then we take a default credentials
+        if( !$values['authnet_login_id'] || $values['authnet_login_id'] == '' ) {
+            $creds = Dotfiler_authnet::get_creds_default();
+            $values['authnet_login_id'] = $creds['login_id'];
+            $values['authnet_transaction_key'] = $creds['transaction_key'];
+        }
+
+        $fields = array(
+            'form_id' => $values['form_id'],
+            'payment_id' => '', 
+            'invoice_id' => $values['invoice_id'],
+            'authnet_login_id' => $values['authnet_login_id'],
+            'authnet_transaction_key' => $values['authnet_transaction_key'],
+            'created_at' => date('Y-m-d H:i:s'),
+            'amount' => $values['amount'],
+        );
+
+        global $wpdb;
+        $wpdb->insert( 'wp_frm_payments_authnet', $fields);
+
+    }
+
+    public static function get_creds_default() {
 
         $data = get_option('frm_authnet_options');
         return (array) $data;

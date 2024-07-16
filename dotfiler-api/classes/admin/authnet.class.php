@@ -29,6 +29,7 @@ class Dotfiler_authnet_admin {
     // Make custom column sortable
     public function make_custom_column_sortable($columns) {
         $columns['total_sum'] = 'total_sum';
+        $columns['login_id'] = 'login_id';
         return $columns;
     }
 
@@ -54,6 +55,9 @@ class Dotfiler_authnet_admin {
 
             echo round($total_sum, 2)." of ".$monthly_limit;
         }
+        if ($column === 'login_id') {
+            echo get_post_meta($post_id, 'authnet_login_id', true);
+        }
     }
 
     // Add custom column to post type list
@@ -63,6 +67,7 @@ class Dotfiler_authnet_admin {
             $new_columns[$key] = $value;
             if ($key === 'title') {
                 $new_columns['total_sum'] = 'Accumulated sum $ (this month)';
+                $new_columns['login_id'] = 'Login ID';
             }
         }
         return $new_columns;

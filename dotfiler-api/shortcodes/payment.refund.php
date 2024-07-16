@@ -22,14 +22,20 @@ function payment_refund_shortcode($atts) {
 
         if( isset($payment_his) ) {
 
-            $authnet_login_id = $payment_his->authnet_login_id;
-            $creds = $authnet->get_creds_by_login_id( $authnet_login_id );
+            // Allows us not to modify Authorize.net FRM plugin
+            define('AUTHORIZENET_API_LOGIN_ID', $payment_his['authnet_login_id']);
+            define('AUTHORIZENET_TRANSACTION_KEY', $payment_his['authnet_transaction_key']);
 
+            //$authnet_login_id = $payment_his->authnet_login_id;
+            //$creds = $authnet->get_creds_by_login_id( $authnet_login_id );
+
+            /*
             if( isset($creds) && is_array($creds) ) {
                 // Allows us not to modify Authorize.net FRM plugin
                 define('AUTHORIZENET_API_LOGIN_ID', $creds['login_id']);
                 define('AUTHORIZENET_TRANSACTION_KEY', $creds['transaction_key']);
             }            
+            */
 
         }
 

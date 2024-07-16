@@ -4,15 +4,16 @@ class Dotfiler_api {
     private $query;
     private $url_base;
     private $url_authority;
+    private $url_oos;
 
     public function __construct( $query ) {
 
-        //$api_key = '54ccd007f7995f515f3e9ede3e73572e69650390';
         $api_key = get_option('dotfiler_api');
         $this->query = $query;
 
         $this->url_base = "https://mobile.fmcsa.dot.gov/qc/services/carriers/{$query}?webKey={$api_key}";
         $this->url_authority = "https://mobile.fmcsa.dot.gov/qc/services/carriers/{$query}/authority?webKey={$api_key}";
+        $this->url_oos = "https://mobile.fmcsa.dot.gov/qc/services/carriers/{$query}/oos?webKey={$api_key}";
 
     }
 
@@ -52,6 +53,34 @@ class Dotfiler_api {
 
             // Return the decoded data.
             return $data['content'][0]['carrierAuthority'];
+        }
+
+    }
+
+    public function request_oos() {
+
+        $response = wp_remote_get($this->url_oos);
+
+        if (is_wp_error($response)) {
+            // Handle error.
+            //return 'Error: ' . $response->get_error_message();
+        } else {
+            // Get the body of the response.
+            $body = wp_remote_retrieve_body($response);
+
+            // Decode the JSON data.
+            $data = json_decode($body, true);
+
+            /*
+            return array(
+                "oosDate" => '2024-06-28',
+                "oosReason"	=> 'NRC',
+                "oosReasonDescription" => 'New Entrant Revoked - Refusal of Audit/No Contact'
+            );
+            */
+
+            // Return the decoded data.
+            return $data['content'][0]['oos'];
         }
 
     }
