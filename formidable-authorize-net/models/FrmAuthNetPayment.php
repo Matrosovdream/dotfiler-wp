@@ -138,7 +138,11 @@ class FrmAuthNetPayment {
 
 	public function get_error_message() {
 		$status = '';
-		if ( empty( $this->response ) ) {
+
+		// If this object isn't empty there is a new Error messages
+		// $this->messages
+		
+		if ( empty( $this->response ) && !empty($this->messages) ) {
 			$status = __( 'There was a problem with your payment.', 'frmauthnet' );
 		} else {
 			$trans_response = $this->get_transaction_response();
@@ -148,15 +152,20 @@ class FrmAuthNetPayment {
 				$errors = $this->response->messages;
 			}
 
+			// New custom messages, it wasn't included in the initial version
+			if( $this->response->messages->resultCode == 'Error' ) {
+				$errors = $this->response->messages->message;
+			}
+
 			foreach ( $errors as $error ) {
 				if ( ! is_object( $error ) ) {
 					continue;
 				}
-
 				$code    = isset( $error->code ) ? $error->code : $error->errorCode;
 				$message = isset( $error->text ) ? $error->text : $error->errorText;
 				$status .= str_replace( "\r\n", '<br/>', $code . ' ' . $message ) . '<br/>';
 			}
+
 		}
 
 		return $status;
@@ -188,7 +197,6 @@ class FrmAuthNetPayment {
 				'request'  => $request,
 			)
 		);
-
 		$this->response = $api->signed_request( $this->request_type );
 	}
 

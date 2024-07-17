@@ -148,10 +148,6 @@ class FrmAuthNetApi {
 		// Get the API login ID from Global Settings.
 		$transaction_key = ( defined( 'AUTHORIZENET_TRANSACTION_KEY' ) ? AUTHORIZENET_TRANSACTION_KEY : $settings->settings->transaction_key );
 
-		/*echo $api_key; echo "<br>";
-		echo $transaction_key;
-		die();*/
-
 		return array(
 			'name'           => $api_key,
 			'transactionKey' => $transaction_key,
