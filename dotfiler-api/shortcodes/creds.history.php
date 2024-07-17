@@ -12,14 +12,14 @@ function order_credentials_shortcode($atts) {
     $payment_his = $authnet->get_payment_by_id( $order_id );
 
     if( isset($payment_his) ) {
-        $authnet_login_id = $payment_his->authnet_login_id;
-        $creds = $authnet->get_creds_by_login_id( $authnet_login_id );
+        $authnet_login_id = $payment_his['authnet_login_id'];
+        //$creds = $authnet->get_creds_by_login_id( $authnet_login_id );
     }
     ob_start();
     ?>
     
         <label class="credentials-stat">
-            Authnet login: <?php echo $creds['login_id']; ?>
+            Authnet login: <?php echo $authnet_login_id; ?>
         </label>
 
     <?php
