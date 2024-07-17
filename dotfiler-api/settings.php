@@ -29,6 +29,7 @@ $initial_forms = array(
 );
 
 // If the API response is empty then we redirect accordingly to this array
+global $empty_response;
 $empty_response = array(
     7 => '/mcs-150/',
     20 => '/mcsa-5889/',

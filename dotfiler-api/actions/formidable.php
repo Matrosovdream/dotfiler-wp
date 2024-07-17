@@ -63,9 +63,10 @@ function check_entry_count($params, $fields, $form) {
     if( $_POST['frm_action'] == 'update' ) { return true; }
 
     require_once DOTFILER_BASE_URL.'/settings.php';
+    global $empty_response;
 
     $form_id = $form->id;
-    $back_url = $empty_response[ $form_id ];
+    $back_url = $empty_response[ $form_id ]; echo $back_url;
     if( $back_url && !$_SESSION['carrier'][$form_id]  ) {
         echo "
             <script>
