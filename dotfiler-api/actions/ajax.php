@@ -141,14 +141,13 @@ function frm_gateway_val( $value, $atts ) {
 
         $authnet = new Dotfiler_authnet();
         $payment_info = $authnet->get_payment_by_id( $payment_item_id );
-        $authnet_login_id = $payment_info->authnet_login_id;
+        $authnet_login_id = $payment_info['authnet_login_id'];
 
-        if( !$authnet_login_id ) { return $value; }
-
-        if( $authnet_login_id == 'AUTHORIZENET_API_LOGIN_ID' ) {
-
-            $default_set = $authnet->get_creds_default();
-            $authnet_login_id = $default_set['login_id'];
+        if( 
+            !$authnet_login_id || 
+            $authnet_login_id == 'AUTHORIZENET_API_LOGIN_ID'
+            ) { 
+                return $value; 
         }
 
         $value .= " (<b>".$authnet_login_id."</b> account)";
