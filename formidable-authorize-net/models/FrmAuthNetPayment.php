@@ -166,7 +166,20 @@ class FrmAuthNetPayment {
 				$status .= str_replace( "\r\n", '<br/>', $code . ' ' . $message ) . '<br/>';
 			}
 
+			// 
+
 		}
+
+		// Insert failed payment
+		$values = array(
+			'entry_id' => $this->entry->id,
+			'form_id' => $this->entry->form_id,
+			'payment_id' => $this->invoice_id,
+			'error_code' => $code,
+			'error_message' => $message,
+		);
+
+		Dotfiler_authnet::insert_payment_failed( $values );
 
 		return $status;
 	}

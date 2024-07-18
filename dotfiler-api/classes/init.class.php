@@ -34,6 +34,9 @@ class Dotfiler_init {
         require_once DOTFILER_BASE_URL.'/shortcodes/charged.history.php';
         require_once DOTFILER_BASE_URL.'/shortcodes/creds.history.php';
 
+        // Failed payment
+        require_once DOTFILER_BASE_URL.'/shortcodes/paystatus.history.php';
+
         // Form handling with the API data
         require_once DOTFILER_BASE_URL.'/shortcodes/form.results.php';
         require_once DOTFILER_BASE_URL.'/shortcodes/form.results.mobile.php';

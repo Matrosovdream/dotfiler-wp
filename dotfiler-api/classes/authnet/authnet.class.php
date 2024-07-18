@@ -223,6 +223,33 @@ class Dotfiler_authnet {
 
     }
 
+    public static function insert_payment_failed( $values ) {
+
+        global $wpdb;
+
+        // Non-editable fields
+        $fields_default = array(
+            'created_at' => date('Y-m-d H:i:s'),
+        );
+
+        // Insert record
+        $table = $wpdb->prefix . 'frm_payments_failed';
+        $wpdb->insert($table, array_merge($values, $fields_default));
+
+        // Catch errors
+        //$wpdb->last_error;
+
+    }
+
+    public static function get_failed_payment( $entry_id ) {
+
+        global $wpdb;
+
+        $query = "SELECT * FROM wp_frm_payments_failed WHERE entry_id={$entry_id}";
+        return $wpdb->get_results( $query, ARRAY_A )[0];
+
+    }
+
     public static function get_creds_default() {
 
         $data = get_option('frm_authnet_options');
