@@ -3,17 +3,19 @@ class Dotfiler_init {
 
     public function __construct() {
 
-        // API class
-        require_once DOTFILER_BASE_URL.'/classes/dotfiler/api.class.php';
-        
-        // Admin classes
-        require_once DOTFILER_BASE_URL.'/classes/admin/admin.class.php';
-        require_once DOTFILER_BASE_URL.'/classes/admin/posttypes.class.php';
-        require_once DOTFILER_BASE_URL.'/classes/admin/authnet.class.php';
-
         // Authorize.net
         require_once DOTFILER_BASE_URL.'/classes/authnet/authnet.class.php';
         require_once DOTFILER_BASE_URL.'/classes/authnet/authnet.refund.php';
+        require_once DOTFILER_BASE_URL.'/classes/authnet/authnet.errors.php';
+
+        // API class
+        require_once DOTFILER_BASE_URL.'/classes/dotfiler/api.class.php';
+
+        // Admin classes
+        require_once DOTFILER_BASE_URL.'/classes/admin/admin.class.php';
+        require_once DOTFILER_BASE_URL.'/classes/admin/posttypes.class.php';
+        //require_once DOTFILER_BASE_URL.'/classes/admin/authnet.account.php';
+        require_once DOTFILER_BASE_URL.'/classes/admin/authnet.error.php';
 
         // Ajax
         require_once DOTFILER_BASE_URL.'/actions/ajax.php';
