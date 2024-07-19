@@ -166,13 +166,11 @@ class FrmAuthNetPayment {
 				$status .= str_replace( "\r\n", '<br/>', $code . ' ' . $message ) . '<br/>';
 			}
 
-			// 
-
 		}
 
 		// Replace the error text to the custom message
 		$message = Dotfiler_authnet_errors::get_error_by_code( $code );
-		if( $message ) {
+		if( isset($message) ) {
 			$status = $message;
 		}
 
@@ -182,7 +180,7 @@ class FrmAuthNetPayment {
 			'form_id' => $this->entry->form_id,
 			'payment_id' => $this->invoice_id,
 			'error_code' => $code,
-			'error_message' => $message,
+			'error_message' => $status,
 		);
 		Dotfiler_authnet::insert_payment_failed( $values );
 
