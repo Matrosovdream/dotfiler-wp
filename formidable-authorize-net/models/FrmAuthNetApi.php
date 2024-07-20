@@ -140,7 +140,12 @@ class FrmAuthNetApi {
 	 * @return array
 	 */
 	public function setup_api() {
+		
 		$settings = new FrmAuthNetSettings();
+
+		// Rotation of API keys.
+		$authnet = new Dotfiler_authnet;
+		$authnet->init_authnet_credentials();
 
 		// Get the API login ID from Global Settings.
 		$api_key = ( defined( 'AUTHORIZENET_API_LOGIN_ID' ) ? AUTHORIZENET_API_LOGIN_ID : $settings->settings->login_id );

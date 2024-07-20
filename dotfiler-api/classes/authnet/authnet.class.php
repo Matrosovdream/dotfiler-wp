@@ -6,7 +6,7 @@ class Dotfiler_authnet {
     public function __construct() {
 
         // Catch Authorize.net credentials and change it
-        add_action('init', array($this, 'init_authnet_credentials') );
+        //add_action('init', array($this, 'init_authnet_credentials') );
 
     }
 
