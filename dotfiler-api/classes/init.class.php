@@ -10,20 +10,22 @@ class Dotfiler_init {
 
         // API class
         require_once DOTFILER_BASE_URL.'/classes/dotfiler/api.class.php';
+        require_once DOTFILER_BASE_URL.'/classes/numverify/numverify.api.php';
 
         // Admin classes
         require_once DOTFILER_BASE_URL.'/classes/admin/admin.class.php';
         require_once DOTFILER_BASE_URL.'/classes/admin/posttypes.class.php';
         require_once DOTFILER_BASE_URL.'/classes/admin/authnet.account.php';
         require_once DOTFILER_BASE_URL.'/classes/admin/authnet.error.php';
-
-        // Ajax
-        require_once DOTFILER_BASE_URL.'/actions/ajax.php';
+        //require_once DOTFILER_BASE_URL.'/classes/admin/phone.validation.php';
 
         // Formidable Extensions
         require_once DOTFILER_BASE_URL.'/classes/shortlinks/shortlinks.class.php';
         require_once DOTFILER_BASE_URL.'/classes/shortlinks/shortlinks.actions.php';
         require_once DOTFILER_BASE_URL.'/classes/shortlinks/shortlinks.wrapper.php';
+
+        // Validators
+        require_once DOTFILER_BASE_URL.'/classes/validators/phonechecker.class.php';
 
         // Shortcodes
         $this->include_shortcodes();
@@ -52,6 +54,9 @@ class Dotfiler_init {
         // Formidable entries
         require_once DOTFILER_BASE_URL.'/shortcodes/entry.shortlink.php';
 
+        // Phone validation
+        require_once DOTFILER_BASE_URL.'/shortcodes/phone.validate.php';
+
 
     }
 
@@ -59,6 +64,10 @@ class Dotfiler_init {
 
         // Formidable forms processing
         require_once DOTFILER_BASE_URL.'/actions/formidable.php';
+
+        // Ajax
+        require_once DOTFILER_BASE_URL.'/actions/ajax.php';
+        require_once DOTFILER_BASE_URL.'/actions/ajax/phone.validate.php';
 
     }
 

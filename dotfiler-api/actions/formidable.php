@@ -66,7 +66,7 @@ function check_entry_count($params, $fields, $form) {
     global $empty_response;
 
     $form_id = $form->id;
-    $back_url = $empty_response[ $form_id ];
+    $back_url = $empty_response[ $form_id ]; 
     if( $back_url && !$_SESSION['carrier'][$form_id]  ) {
         echo "
             <script>

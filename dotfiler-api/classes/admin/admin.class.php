@@ -44,6 +44,8 @@ class Dotfiler_admin {
         register_setting('dotfiler_api_group', 'dotfiler_api');
         register_setting('dotfiler_api_group', 'saferweb_api_key');
         register_setting('dotfiler_api_group', 'frm_remove_failed_entries');
+        register_setting('dotfiler_api_group', 'frm_phone_validator_service');
+        register_setting('dotfiler_api_group', 'numverify_access_key');
 
         add_settings_section(
             'dotfiler_api_section',
@@ -92,6 +94,29 @@ class Dotfiler_admin {
             'formidable_entries_section'
         );
 
+        add_settings_section(
+            'formidable_phone_validator_section',
+            'Phone Validator Settings',
+            array($this, 'formidable_phone_validator_section_callback'),
+            'dotfiler_api_settings'
+        );
+
+        add_settings_field(
+            'frm_phone_validator_service',
+            'Phone Validator Service',
+            array($this, 'frm_phone_validator_service_callback'),
+            'dotfiler_api_settings',
+            'formidable_phone_validator_section'
+        );
+
+        add_settings_field(
+            'numverify_access_key',
+            'Numverify Access Key',
+            array($this, 'numverify_access_key_callback'),
+            'dotfiler_api_settings',
+            'formidable_phone_validator_section'
+        );
+
     }
 
     public function dotfiler_api_section_callback() {
@@ -101,13 +126,37 @@ class Dotfiler_admin {
     public function formidable_entries_section_callback() {
         //echo '<p>Formidable Entries Settings:</p>';
     }
+
+    public function formidable_phone_validator_section_callback() {
+        //echo '<p>Formidable Entries Settings:</p>';
+    }
+
+    public function frm_phone_validator_service_callback() {
+        $value = get_option('frm_phone_validator_service');
+        if (empty($value)) {
+            $value = 'numverify';
+        }
+        
+        $services = [
+            'numverify' => 'Numverify',
+        ];
+        foreach ($services as $key => $label) {
+            echo '<input type="radio" name="frm_phone_validator_service" value="' . esc_attr($key) . '" ' . checked($key, $value, false) . ' />';
+            echo '<label>' . esc_html($label) . '</label><br>';
+        }
+
+    }
+
+    public function numverify_access_key_callback() {
+        $value = get_option('numverify_access_key');
+        echo '<input type="text" name="numverify_access_key" value="' . esc_attr($value) . '" style="width: 400px;" />';
+    }
     
     public function frm_remove_failed_entries_callback() {
         $value = get_option('frm_remove_failed_entries');
         echo '<input type="checkbox" name="frm_remove_failed_entries" value="1" ' . checked(1, $value, false) . ' />';
     }
     
-
     public function dotfiler_api_callback() {
         $value = get_option('dotfiler_api');
         echo '<input type="text" name="dotfiler_api" value="' . esc_attr($value) . '" style="width: 400px;" />';
@@ -123,5 +172,3 @@ class Dotfiler_admin {
 }
 
 new Dotfiler_admin();
-
-
