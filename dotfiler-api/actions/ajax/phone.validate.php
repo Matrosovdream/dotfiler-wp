@@ -6,7 +6,9 @@ function phone_validate() {
     $phone = $_POST['phone'];
     $checker = (new PhoneChecker( $phone ))->verify();
 
-    if(  $checker->is_valid() ) {
+    if( $checker->is_error() ) {
+        $html =  '<p class="validation-error">' . $checker->get_error() . '</p>';
+    } elseif(  $checker->is_valid() ) {
 
         $fields = array(
             'Country' => $checker->get_country(),

@@ -48,14 +48,28 @@ class Numverify {
 
     private function process_response() {
 
+        // Process HTTP errors
         if (is_wp_error($this->response)) {
             $this->errors[] = $this->response->get_error_message();
             return false;
         }
 
         $body = wp_remote_retrieve_body( $this->response );
-        return json_decode($body);
+        $body = json_decode( $body, true );
+
+        // Process response errors
+        if( isset($body['error']) ) {
+            $this->errors[] = $body['error'];
+            return false;
+        }
+
+        return $body;
 
     }
+
+    public function get_errors() {
+        return $this->errors;
+    }
+
 
 }
