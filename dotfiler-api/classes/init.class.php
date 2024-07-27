@@ -14,11 +14,16 @@ class Dotfiler_init {
         // Admin classes
         require_once DOTFILER_BASE_URL.'/classes/admin/admin.class.php';
         require_once DOTFILER_BASE_URL.'/classes/admin/posttypes.class.php';
-        //require_once DOTFILER_BASE_URL.'/classes/admin/authnet.account.php';
+        require_once DOTFILER_BASE_URL.'/classes/admin/authnet.account.php';
         require_once DOTFILER_BASE_URL.'/classes/admin/authnet.error.php';
 
         // Ajax
         require_once DOTFILER_BASE_URL.'/actions/ajax.php';
+
+        // Formidable Extensions
+        require_once DOTFILER_BASE_URL.'/classes/shortlinks/shortlinks.class.php';
+        require_once DOTFILER_BASE_URL.'/classes/shortlinks/shortlinks.actions.php';
+        require_once DOTFILER_BASE_URL.'/classes/shortlinks/shortlinks.wrapper.php';
 
         // Shortcodes
         $this->include_shortcodes();
@@ -43,6 +48,10 @@ class Dotfiler_init {
         require_once DOTFILER_BASE_URL.'/shortcodes/form.results.php';
         require_once DOTFILER_BASE_URL.'/shortcodes/form.results.mobile.php';
         require_once DOTFILER_BASE_URL.'/shortcodes/form.errorblock.php';
+
+        // Formidable entries
+        require_once DOTFILER_BASE_URL.'/shortcodes/entry.shortlink.php';
+
 
     }
 
