@@ -8,6 +8,7 @@ class PhoneChecker {
     public function __construct( $number, $service = 'numverify' ) {
 
         if( $service == 'numverify' ) {
+            
             $this->service = new Numverify( get_option('numverify_access_key') );
         }
 
@@ -16,6 +17,9 @@ class PhoneChecker {
     }
 
     public function verify() {
+
+        // Prepare phone number value
+        $this->prepare_number();
 
         // Make request
         $this->response = $this->service->verify_number( $this->number );
@@ -75,6 +79,16 @@ class PhoneChecker {
 
     public function get_response() {
         return $this->response;
+    }
+
+    private function prepare_number() {
+
+        // Remove all symbols
+        $this->number = preg_replace('/[^0-9]/', '', $this->number);
+
+        // Add 1 to every one
+        $this->number = "1{$this->number}";
+
     }
 
 }    
