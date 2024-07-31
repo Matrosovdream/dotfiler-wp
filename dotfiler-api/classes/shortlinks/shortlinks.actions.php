@@ -21,7 +21,8 @@ class Formidable_shortlinks_actions {
 
     public function formidable_shortlinks_redirect() {
 
-        $new_url = $this->verify_shortlink( $url = $_SERVER['SCRIPT_URI'] );
+        global $wp;
+        $new_url = $this->verify_shortlink( $url = home_url( $wp->request ) );
 
         // Redirect
         if( $new_url ) {
@@ -32,7 +33,8 @@ class Formidable_shortlinks_actions {
     }
 
     private function verify_shortlink( $url ) {
-
+        
+        
         // For optimization, we don't make SQL request every hit
         if( strpos($url, $this->shortener->short_url_base) === false ) {
             return;

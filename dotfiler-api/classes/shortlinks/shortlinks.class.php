@@ -42,6 +42,7 @@ class Formidable_shortlinks {
         global $wpdb;
 
         $hash = $this->make_hash();
+        $url = $this->prepare_url( $url );
 
         $data = array(
             'original_url' => $url,
@@ -70,6 +71,12 @@ class Formidable_shortlinks {
             $randomString .= $characters[random_int(0, $charactersLength - 1)];
         }
         return $randomString;
+
+    }
+
+    private function prepare_url( $url ) {
+
+        return html_entity_decode( $url );
 
     }
     
