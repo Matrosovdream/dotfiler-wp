@@ -26,6 +26,7 @@ class Dotfiler_init {
 
         // Validators
         require_once DOTFILER_BASE_URL.'/classes/validators/phonechecker.class.php';
+        require_once DOTFILER_BASE_URL.'/classes/validators/phonechecker.helper.php';
 
         // Shortcodes
         $this->include_shortcodes();
@@ -68,6 +69,9 @@ class Dotfiler_init {
         // Ajax
         require_once DOTFILER_BASE_URL.'/actions/ajax.php';
         require_once DOTFILER_BASE_URL.'/actions/ajax/phone.validate.php';
+
+        // Page CSS/JS scripts
+        require_once DOTFILER_BASE_URL.'/actions/page.php';
 
     }
 
