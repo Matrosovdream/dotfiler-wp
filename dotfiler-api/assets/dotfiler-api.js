@@ -4,11 +4,24 @@ const ajaxurl = '/wp-admin/admin-ajax.php';
 
 // Formidable Forms - Phone number validation by API
 jQuery(document).on('change', '.validate-api input[type="tel"]', function () {
+    validate_phone_api( jQuery(this).closest('.validate-api') );
+});
 
-    var value = jQuery(this).val();
+
+jQuery(document).ready(function() {
+
+    jQuery('.validate-force .validate-api').each(function() {
+        validate_phone_api( jQuery(this) );
+    })
+
+});
+
+function validate_phone_api( element ) {
+
+    var value = element.find('input[type="tel"]').val();
 
     // Extract attached field
-    var siblingClass = jQuery('.validate-api').attr('class').split(' ').find(function (className) {
+    var siblingClass = element.attr('class').split(' ').find(function (className) {
         return className.startsWith('sibling-');
     });
     var sibling = '#field_' + siblingClass.split('-')[1];
@@ -33,7 +46,7 @@ jQuery(document).on('change', '.validate-api input[type="tel"]', function () {
         }
     });
 
-});
+}
 
 
 // Phone number validation by API in a shortcode
