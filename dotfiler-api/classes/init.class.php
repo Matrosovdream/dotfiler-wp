@@ -23,6 +23,7 @@ class Dotfiler_init {
         require_once DOTFILER_BASE_URL.'/classes/shortlinks/shortlinks.class.php';
         require_once DOTFILER_BASE_URL.'/classes/shortlinks/shortlinks.actions.php';
         require_once DOTFILER_BASE_URL.'/classes/shortlinks/shortlinks.wrapper.php';
+        require_once DOTFILER_BASE_URL.'/classes/twillio/twillio.extension.php';
 
         // Validators
         require_once DOTFILER_BASE_URL.'/classes/validators/phonechecker.class.php';
