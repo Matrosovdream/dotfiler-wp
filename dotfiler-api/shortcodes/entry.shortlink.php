@@ -10,7 +10,7 @@ function frm_shortlink_func($atts) {
     $wrapper = new Formidable_shortlinks_wrapper( $shortcode );
 
     // Process and return result
-    return $wrapper->replace_link()->get_html();
+    return $wrapper->replace_link()->get_short_url();
 
 }
 add_shortcode('frm-short-link', 'frm_shortlink_func');

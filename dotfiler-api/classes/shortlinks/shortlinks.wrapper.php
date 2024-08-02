@@ -3,6 +3,8 @@ class Formidable_shortlinks_wrapper {
 
     public $shortcode;
     public $html='';
+    public $full_url='';
+    public $short_url='';
     private $shortener;
 
     public function __construct( $shortcode ) {
@@ -23,7 +25,10 @@ class Formidable_shortlinks_wrapper {
 
         // Generate shortlink
         $new_url = $this->generate_shortlink( $url );
-        if( isset($new_url) ) { $url = $new_url; }
+        if( isset($new_url) ) { 
+            $this->short_url = $new_url;
+            $url = $new_url; 
+        }
 
         // Replace url
         $this->replace_url( $url );
@@ -43,6 +48,10 @@ class Formidable_shortlinks_wrapper {
     private function retrieve_url() {
 
         preg_match('/href="([^"]+)"/', $this->html, $matches);
+        $url = $matches[1];
+
+        $this->full_url = $url;
+
         return $matches[1];
 
     }
@@ -57,6 +66,10 @@ class Formidable_shortlinks_wrapper {
 
     public function get_html() {
         return $this->html;
+    }
+
+    public function get_short_url() {
+        return $this->short_url;
     }
 
 }
