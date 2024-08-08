@@ -36,7 +36,11 @@ class FRM_Twillio_extension {
 
     public function frm_twilio_autoresponder_should_trigger($should_trigger, $entry, $action) {
 
-        if( in_array( 'abandoned', $action->post_content['event'], true ) ) {
+        if( 
+            in_array( 'abandoned', $action->post_content['event'], true ) 
+            && wp_doing_cron()
+            //&& $entry->is_draft == 3
+            ) {
             return true;
         }
 
