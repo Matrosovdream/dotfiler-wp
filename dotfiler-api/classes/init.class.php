@@ -24,10 +24,20 @@ class Dotfiler_init {
         require_once DOTFILER_BASE_URL.'/classes/shortlinks/shortlinks.actions.php';
         require_once DOTFILER_BASE_URL.'/classes/shortlinks/shortlinks.wrapper.php';
         require_once DOTFILER_BASE_URL.'/classes/twillio/twillio.extension.php';
+        require_once DOTFILER_BASE_URL.'/classes/formidable/entry.cleaner.php';
+        require_once DOTFILER_BASE_URL.'/classes/formidable/entry.helper.php';
+        require_once DOTFILER_BASE_URL.'/classes/formidable/entry.archive.php';
 
         // Validators
         require_once DOTFILER_BASE_URL.'/classes/validators/phonechecker.class.php';
         require_once DOTFILER_BASE_URL.'/classes/validators/phonechecker.helper.php';
+
+        // CRON
+        require_once DOTFILER_BASE_URL.'/classes/cron/schedules.cron.php';
+        require_once DOTFILER_BASE_URL.'/classes/cron/formidable/entrycleaner.cron.php';
+
+
+
 
         // Shortcodes
         $this->include_shortcodes();
