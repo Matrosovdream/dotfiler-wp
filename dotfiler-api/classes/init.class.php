@@ -36,14 +36,21 @@ class Dotfiler_init {
         require_once DOTFILER_BASE_URL.'/classes/cron/schedules.cron.php';
         require_once DOTFILER_BASE_URL.'/classes/cron/formidable/entrycleaner.cron.php';
 
-
-
+        // Migrations
+        $this->include_migrations();
 
         // Shortcodes
         $this->include_shortcodes();
 
         // Hooks
         $this->include_hooks();
+
+    }
+
+    private function include_migrations() {
+
+        // Entries cleaner extra tables
+        require_once DOTFILER_BASE_URL.'/classes//migrations/archive.entries.php';
 
     }
 

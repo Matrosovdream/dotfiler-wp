@@ -18,10 +18,10 @@ class Entrycleaner_cron {
                 'interval' => 'every_five_minutes',
                 'action' => 'remove_old_entries',
             ),
-            'similar' => array(
+            /*'similar' => array(
                 'interval' => 'every_five_minutes',
                 'action' => 'remove_similar_entries',
-            ),
+            ),*/
         );
 
         // Set cron jobs

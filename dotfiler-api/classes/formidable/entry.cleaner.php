@@ -156,6 +156,10 @@ class FRM_entry_cleaner {
 
     }    
 
+    public function get_period() {
+        return $this->period;
+    }
+
     public function set_period( $period ) {
         $this->period = $period;
     }
