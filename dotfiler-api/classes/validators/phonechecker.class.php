@@ -83,8 +83,19 @@ class PhoneChecker {
 
     private function prepare_number() {
 
-        // Remove all symbols
-        $this->number = preg_replace('/[^0-9]/', '', $this->number);
+        // Remove all symbols but not numbers and +
+        $this->number = preg_replace('/[^0-9+]/', '', $this->number);
+
+        // If the number starts from +1 then do nothing
+        if( strpos( $this->number, '+1' ) !== false ) {
+            return;
+        }
+
+        // If the first number is 1 then add + to the beginning
+        if( strpos( $this->number, '1' ) === 0 ) {
+            $this->number = "+{$this->number}";
+            return;
+        }
 
         // Add 1 to every one
         $this->number = "1{$this->number}";
