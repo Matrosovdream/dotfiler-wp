@@ -9,10 +9,31 @@ class Migration_entries {
 
     public function execute_query_init() {
 
-        if( isset($_GET['migrate']) ) {
-            $this->execute_query();
+        if( !$this->checkRights() ) {
+            return;
         }
 
+        if( isset($_GET['migrate']) ) {
+            $this->execute_query();
+            exit();
+        }
+
+        if( isset($_GET['tables']) ) {
+
+            $tables = $this->getDBTables();
+
+            echo "<pre>";
+            print_r($tables);
+            echo "</pre>";
+            exit();
+        }
+
+    }
+
+    // Check if user has rights to execute
+    private function checkRights() {
+        if( !current_user_can('manage_options') ) { return false; }
+        return true;
     }
 
     public function execute_query() {
@@ -22,7 +43,7 @@ class Migration_entries {
         $queries = $this->queries();
         
         foreach( $queries as $query ) {
-            dbDelta( $query );
+            $res = dbDelta( $query );
         }
 
     }
@@ -86,6 +107,18 @@ class Migration_entries {
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;";
 
         return $queries; 
+
+    }
+
+    private function getDBTables() {
+
+        global $wpdb;
+        $tables = $wpdb->get_results("SHOW TABLES", ARRAY_N);
+        $tables = array_map(function($table) {
+            return $table[0];
+        }, $tables);
+
+        return $tables;
 
     }
 

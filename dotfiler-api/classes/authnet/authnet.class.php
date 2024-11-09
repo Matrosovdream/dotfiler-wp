@@ -107,7 +107,7 @@ class Dotfiler_authnet {
                 $headers = 'From: your_email@example.com' . PHP_EOL;
                 $headers .= 'Content-Type: text/plain; charset=utf-8' . PHP_EOL;
     
-                wp_mail($to, $subject, $message, $headers);
+                //wp_mail($to, $subject, $message, $headers);
     
             }
 
