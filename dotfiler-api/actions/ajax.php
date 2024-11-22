@@ -14,6 +14,11 @@ function api_quick_test_javascript() {
                 ein: jQuery("input[name='usdot']").val()
             };
 
+            // Not isset ein
+            if( !data.ein ) { 
+                data.ein = jQuery(".form-field.usdot input[type='text']").val();
+            }
+
             jQuery.post( '/wp-admin/admin-ajax.php', data, function( response ){
 
                 var val = response;
@@ -26,6 +31,7 @@ function api_quick_test_javascript() {
                     // Hidden inputs
                     jQuery('input[name="item_meta[89]"]').val(val);
                     jQuery('input[name="item_meta[842]"]').val(val);
+                    jQuery('input[name="item_meta[1780]"]').val(val);
 
                 }
 
@@ -143,11 +149,12 @@ function frm_gateway_val( $value, $atts ) {
         $payment_info = $authnet->get_payment_by_id( $payment_item_id );
         $authnet_login_id = $payment_info['authnet_login_id'];
 
-        if( 
-            !$authnet_login_id || 
-            $authnet_login_id == 'AUTHORIZENET_API_LOGIN_ID'
-            ) { 
-                return $value; 
+        if( !$authnet_login_id ) { return $value; }
+
+        if( $authnet_login_id == 'AUTHORIZENET_API_LOGIN_ID' ) {
+
+            $default_set = $authnet->get_creds_default();
+            $authnet_login_id = $default_set['login_id'];
         }
 
         $value .= " (<b>".$authnet_login_id."</b> account)";
