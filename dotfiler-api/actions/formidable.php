@@ -18,6 +18,35 @@ function init_get_dot_data() {
         $API = new Dotfiler_api( $query=$val );
         $data = $API->request_saferweb();
 
+        // Get FMSCA also
+        $data['fmcsa'] = $API->request_base()['content']['carrier'];
+
+        $data['fmcsa_state'] = $data['fmcsa']['phyState'];
+        $data['fmcsa_city'] = $data['fmcsa']['phyCity'];
+        $data['fmcsa_street'] = $data['fmcsa']['phyStreet'];
+        $data['fmcsa_zipcode'] = $data['fmcsa']['phyZipcode'];
+
+        
+
+
+        // Check logs by admin
+        //if ( current_user_can( 'manage_options' ) && get_current_user_id() == 2 ) {
+
+            // Get transportation data
+            $data['transportation'] = $API->getTransGovData();
+
+            foreach( $data['transportation'] as $key => $value ) {
+                $data['gov_'.$key] = $value;
+            }
+
+            /*
+            echo "<pre>";
+            print_r($data);
+            echo "</pre>";
+            die();
+            */
+        //}
+
 
         if( !isset($data['usdot']) ) {
             unset( $_SESSION['carrier'][ $form_info['final_form'] ] );
@@ -66,7 +95,7 @@ function check_entry_count($params, $fields, $form) {
     global $empty_response;
 
     $form_id = $form->id;
-    $back_url = $empty_response[ $form_id ]; 
+    $back_url = $empty_response[ $form_id ];
     if( $back_url && !$_SESSION['carrier'][$form_id]  ) {
         echo "
             <script>
@@ -86,10 +115,12 @@ function prefill_formidable_form( $field_values, $form_field ) {
         $data = $_SESSION['carrier'][$form_id];
     } else {
         $data = array();
-     }
-    
+    }
 
-    if( $field_values['form_id'] == 3 || $field_values['form_id'] == 7 || $field_values['form_id'] == 20 || $field_values['form_id'] == 9 || $field_values['form_id'] == 15 ) {
+    // Log the data here if you need to
+
+
+    if( $field_values['form_id'] == 2 || $field_values['form_id'] == 9 || $field_values['form_id'] == 11 || $field_values['form_id'] == 13 ) {
         $val = match_form_fields( $data, $form_field->id, $form_id );
         if( $val != '' ) {
             $field_values['value'] = $val;

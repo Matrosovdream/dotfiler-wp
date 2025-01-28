@@ -6,6 +6,8 @@ class Dotfiler_api {
     private $url_authority;
     private $url_oos;
 
+    private $transportationAPI;
+
     public function __construct( $query ) {
 
         $api_key = get_option('dotfiler_api');
@@ -15,6 +17,17 @@ class Dotfiler_api {
         $this->url_authority = "https://mobile.fmcsa.dot.gov/qc/services/carriers/{$query}/authority?webKey={$api_key}";
         $this->url_oos = "https://mobile.fmcsa.dot.gov/qc/services/carriers/{$query}/oos?webKey={$api_key}";
 
+        $this->transportationAPI = new DataTransportationApi();
+
+    }
+
+    public function getTransGovData() {
+
+        $this->transportationAPI->setFilters([
+            'dot_number' => $this->query
+        ]);
+
+        return $this->transportationAPI->request();
     }
 
     public function request_base() {
