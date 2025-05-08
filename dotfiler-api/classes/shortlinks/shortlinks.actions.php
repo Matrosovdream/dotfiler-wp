@@ -18,27 +18,6 @@ class Formidable_shortlinks_actions {
 
         add_action( 'template_redirect', [$this, 'formidable_shortlinks_redirect'] );
 
-        add_action('init', [$this, 'execute_shortlinks_init']);
-
-    }
-
-    public function execute_shortlinks_init() {
-
-        if( !$this->checkRights() ) {
-            return;
-        }
-
-        if( isset($_GET['linkss']) ) {
-
-            $links = $this->shortener->get_shortlinks();
-
-            echo "<pre>";
-            print_r($links);
-            echo "</pre>";
-            die();
-
-        }
-
     }
 
     public function formidable_shortlinks_redirect() {
@@ -68,12 +47,6 @@ class Formidable_shortlinks_actions {
         // Search in Database
         return $this->shortener->find_shortlink( $url, 'short_url' )->original_url;
 
-    }
-
-    // Check if user has rights to execute
-    private function checkRights() {
-        if( !current_user_can('manage_options') ) { return false; }
-        return true;
     }
 
 }

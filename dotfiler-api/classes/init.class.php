@@ -45,9 +45,6 @@ class Dotfiler_init {
         // Hooks
         $this->include_hooks();
 
-        // Formidable addons
-        require_once DOTFILER_BASE_URL.'/addons/Formidable/AttachFilesToEmail.php';
-
     }
 
     private function include_migrations() {

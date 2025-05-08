@@ -27,29 +27,25 @@ class FRM_Twillio_extension {
     }
 
     public function frm_twlo_action_options($actions) {
+
         $actions['event'][] = 'abandoned';
+
         return $actions;
     
     }
 
     public function frm_twilio_autoresponder_should_trigger($should_trigger, $entry, $action) {
 
-        /*
-        echo "<pre>";
-        print_r($action->post_content);
-        echo "</pre>";
-        */
-
         if( 
-            in_array( 'abandoned', $action->post_content['event']) 
+            in_array( 'abandoned', $action->post_content['event'], true ) 
+            && wp_doing_cron()
             //&& $entry->is_draft == 3
             ) {
-
-                return true;
 
             // The list of rules for similar entries
             return $this->check_for_duplicate_entries($entry, $action);
 
+            return true;
         }
 
         return $should_trigger;

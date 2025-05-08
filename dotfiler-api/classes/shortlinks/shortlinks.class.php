@@ -96,26 +96,4 @@ class Formidable_shortlinks {
 
     }
 
-    // Get all shortlinks with pagination
-    public function get_shortlinks( $per_page = 10 ) {
-
-        global $wpdb;
-
-        $sql = "SELECT * FROM $this->table ORDER BY id DESC LIMIT %d, %d";
-        $sql = $wpdb->prepare( $sql, 0, $per_page );
-
-        return $wpdb->get_results( $sql );
-
-    }
-
-    public function clear_shortlinks() {
-
-        global $wpdb;
-
-        $sql = "DELETE FROM $this->table";
-        $wpdb->query($sql);
-
-    }
-
-
 }

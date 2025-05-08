@@ -5,13 +5,13 @@ class FRM_entry_cleaner {
     private $forms = [];
     private $statuses = [1, 2, 3]; // 1 - draft, 2 - in progress, 3 - abandoned
     private $paged = 100;
-    private $archive = true;
+    private $archive = false;
 
     public function __construct() {
 
         // Set initial settings
-        if( get_option('frm_cleaner_period') ) {
-            $this->period = get_option('frm_cleaner_period');
+        if( get_option('old_entries_period') ) {
+            $this->period = get_option('old_entries_period');
         }
         if( get_option('frm_cleaner_forms') ) {
             $this->forms = get_option('frm_cleaner_forms');
@@ -31,10 +31,6 @@ class FRM_entry_cleaner {
         foreach( $entries as $entry_id ) {
             $this->remove_entry( $entry_id );
         }
-
-        echo "<pre>";
-        print_r($entries);
-        echo "</pre>";
 
     }
 
