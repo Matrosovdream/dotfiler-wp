@@ -42,10 +42,6 @@ class FRM_entry_cleaner {
             $this->remove_entry( $entry_id );
         }
 
-        echo "<pre>";
-        print_r($entries);
-        echo "</pre>";
-
     }
 
     public function remove_empty_entries() {
@@ -55,10 +51,6 @@ class FRM_entry_cleaner {
         foreach( $entries as $entry_id ) {
             $this->remove_entry( $entry_id );
         }
-
-        echo "<pre>";
-        print_r($entries);
-        echo "</pre>";
 
     }
 
