@@ -315,6 +315,54 @@ class FrmAuthNetPayment {
 
 		$frm_authnet->update( $this->invoice_id, $values );
 
+
+		// DB
+		if( $values['status'] == "complete" ) {
+
+			// Prepare credentials
+			if( defined( 'AUTHORIZENET_API_LOGIN_ID' ) ) {
+				$login_id = AUTHORIZENET_API_LOGIN_ID;
+				$transaction_id = AUTHORIZENET_TRANSACTION_KEY;
+			} else {
+				$settings = new FrmAuthNetSettings();
+				$login_id = $settings->settings->login_id;
+				$transaction_id = $settings->settings->transaction_key;
+			}
+
+			// Insert into DB
+			$fields = array(
+				'form_id' => $_POST['form_id'], 
+				'payment_id' => '', 
+				'invoice_id' => $values['invoice_id'],
+				'authnet_login_id' => $login_id,
+				'authnet_transaction_key' => $transaction_id,
+				'created_at' => date('Y-m-d H:i:s'),
+				'amount' => $this->get_invoice_amount()
+			);
+
+			global $wpdb;
+			$done = $wpdb->insert( 'wp_frm_payments_authnet', $fields);
+
+			/*
+			echo "<pre>";
+			print_r($values);
+			echo "</pre>";
+			die();
+			*/
+
+			/*
+			$data = [
+				"form_id" => $_POST['form_id'],
+				"invoice_id" => $values['invoice_id'],
+				"amount" => $this->get_invoice_amount(),
+				"authnet_login_id" => AUTHORIZENET_API_LOGIN_ID,
+				"authnet_transaction_key" => AUTHORIZENET_TRANSACTION_KEY
+			];
+			Dotfiler_authnet::insert_transaction( $data );
+			*/
+			
+		}
+
 		//$this->trigger_actions( $status );
 	}
 
