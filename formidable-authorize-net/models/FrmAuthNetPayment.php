@@ -138,11 +138,7 @@ class FrmAuthNetPayment {
 
 	public function get_error_message() {
 		$status = '';
-
-		// If this object isn't empty there is a new Error messages
-		// $this->messages
-		
-		if ( empty( $this->response ) && !empty($this->messages) ) {
+		if ( empty( $this->response ) ) {
 			$status = __( 'There was a problem with your payment.', 'frmauthnet' );
 		} else {
 			$trans_response = $this->get_transaction_response();
@@ -152,22 +148,15 @@ class FrmAuthNetPayment {
 				$errors = $this->response->messages;
 			}
 
-			// New custom messages, it wasn't included in the initial version
-			if( $this->response->messages->resultCode == 'Error' ) {
-				$errors = $this->response->messages->message;
-			}
-
 			foreach ( $errors as $error ) {
 				if ( ! is_object( $error ) ) {
 					continue;
 				}
+
 				$code    = isset( $error->code ) ? $error->code : $error->errorCode;
 				$message = isset( $error->text ) ? $error->text : $error->errorText;
 				$status .= str_replace( "\r\n", '<br/>', $code . ' ' . $message ) . '<br/>';
 			}
-
-			// 
-
 		}
 
 		// Replace the error text to the custom message
@@ -216,6 +205,7 @@ class FrmAuthNetPayment {
 				'request'  => $request,
 			)
 		);
+
 		$this->response = $api->signed_request( $this->request_type );
 	}
 
@@ -324,53 +314,6 @@ class FrmAuthNetPayment {
 		}
 
 		$frm_authnet->update( $this->invoice_id, $values );
-
-		// DB
-		if( $values['status'] == "complete" ) {
-
-			// Prepare credentials
-			if( defined( 'AUTHORIZENET_API_LOGIN_ID' ) ) {
-				$login_id = AUTHORIZENET_API_LOGIN_ID;
-				$transaction_id = AUTHORIZENET_TRANSACTION_KEY;
-			} else {
-				$settings = new FrmAuthNetSettings();
-				$login_id = $settings->settings->login_id;
-				$transaction_id = $settings->settings->transaction_key;
-			}
-
-			// Insert into DB
-			$fields = array(
-				'form_id' => $_POST['form_id'], 
-				'payment_id' => '', 
-				'invoice_id' => $values['invoice_id'],
-				'authnet_login_id' => $login_id,
-				'authnet_transaction_key' => $transaction_id,
-				'created_at' => date('Y-m-d H:i:s'),
-				'amount' => $this->get_invoice_amount()
-			);
-
-			global $wpdb;
-			$done = $wpdb->insert( 'wp_frm_payments_authnet', $fields);
-
-			/*
-			echo "<pre>";
-			print_r($values);
-			echo "</pre>";
-			die();
-			*/
-
-			/*
-			$data = [
-				"form_id" => $_POST['form_id'],
-				"invoice_id" => $values['invoice_id'],
-				"amount" => $this->get_invoice_amount(),
-				"authnet_login_id" => AUTHORIZENET_API_LOGIN_ID,
-				"authnet_transaction_key" => AUTHORIZENET_TRANSACTION_KEY
-			];
-			Dotfiler_authnet::insert_transaction( $data );
-			*/
-			
-		}
 
 		//$this->trigger_actions( $status );
 	}

