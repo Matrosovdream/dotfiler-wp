@@ -47,7 +47,7 @@ class FrmAutoresponderAppController {
 	/**
 	 * Load textdomain for translations.
 	 *
-	 * @since x.x
+	 * @since 2.07
 	 *
 	 * @return void
 	 */
@@ -298,6 +298,12 @@ class FrmAutoresponderAppController {
 					remove_action( 'frm_trigger_register_action', 'FrmRegUserController::register_user', 10 );
 				} elseif ( 'zapier' === $action->post_excerpt ) {
 					remove_action( 'frm_trigger_zapier_action', 'FrmZapApiController::send_entry_to_zapier', 10 );
+				} elseif ( 'googlespreadsheet' === $action->post_excerpt ) {
+					remove_action( 'frm_trigger_googlespreadsheet_action', 'FrmGoogleSpreadsheetAppController::trigger_googlespreadsheet', 10 );
+				} elseif ( 'activecampaign' === $action->post_excerpt ) {
+					remove_action( 'frm_trigger_activecampaign_action', 'FrmActivecampaignAppController::trigger_activecampaign', 10 );
+				} elseif ( 'mailchimp' === $action->post_excerpt ) {
+					remove_action( 'frm_trigger_mailchimp_action', 'FrmMlcmpAppController::trigger_mailchimp', 10 );
 				}
 			}
 		}
@@ -356,6 +362,12 @@ class FrmAutoresponderAppController {
 					add_action( 'frm_trigger_register_action', 'FrmRegUserController::register_user', 10, 3 );
 				} elseif ( 'zapier' === $action->post_excerpt ) {
 					add_action( 'frm_trigger_zapier_action', 'FrmZapApiController::send_entry_to_zapier', 10, 4 );
+				} elseif ( 'googlespreadsheet' === $action->post_excerpt ) {
+					add_action( 'frm_trigger_googlespreadsheet_action', 'FrmGoogleSpreadsheetAppController::trigger_googlespreadsheet', 10, 3 );
+				} elseif ( 'activecampaign' === $action->post_excerpt ) {
+					add_action( 'frm_trigger_activecampaign_action', 'FrmActivecampaignAppController::trigger_activecampaign', 10, 3 );
+				} elseif ( 'mailchimp' === $action->post_excerpt ) {
+					add_action( 'frm_trigger_mailchimp_action', 'FrmMlcmpAppController::trigger_mailchimp', 10, 3 );
 				}
 			}
 		}
@@ -398,22 +410,18 @@ class FrmAutoresponderAppController {
 	 * @return void
 	 */
 	public static function trigger_autoresponder( $entry, $action ) {
-		
 		$autoresponder = FrmAutoresponder::get_autoresponder( $action );
 		if ( ! $autoresponder ) {
 			return;
 		}
 
-		// Default to true
 		if ( $entry->is_draft && ! in_array( 'draft', $action->post_content['event'], true ) ) {
-			$should_trigger = false;
+			return;
 		}
 
-		// Apply filter to the action
-		$should_trigger = apply_filters( 'formidable_autoresponder_should_trigger', $should_trigger, $entry, $action );
-
-		if ( ! $should_trigger ) {
-			return;
+		// Apply filter to the action, CUSTOM UPDATE
+		if( !apply_filters( 'formidable_autoresponder_should_trigger', $should_trigger=true, $entry, $action ) ) {
+			return ;
 		}
 
 		$reference_date = self::get_trigger_date( compact( 'entry', 'action', 'autoresponder' ) );
@@ -512,7 +520,7 @@ class FrmAutoresponderAppController {
 	/**
 	 * Break up a datetime string and filter the time before imploding it back together.
 	 *
-	 * @since x.x
+	 * @since 2.07
 	 *
 	 * @param string $datetime Date string in Y-m-d H:i:s format.
 	 * @param array  $atts
@@ -532,7 +540,7 @@ class FrmAutoresponderAppController {
 	 * Check the time from the attributes and then filter it through frm_autoresponder_time.
 	 * If the attributes do not include time, 00:00:00 is used by default.
 	 *
-	 * @since x.x
+	 * @since 2.07
 	 *
 	 * @param array $atts
 	 * @return string
@@ -558,7 +566,7 @@ class FrmAutoresponderAppController {
 		if ( is_string( $filtered_time ) ) {
 			$time = $filtered_time;
 		} else {
-			_doing_it_wrong( __METHOD__, esc_html__( 'Only a string should be passed as the autoresponder trigger time.', 'formidable-autoresponder' ), 'x.x' );
+			_doing_it_wrong( __METHOD__, esc_html__( 'Only a string should be passed as the autoresponder trigger time.', 'formidable-autoresponder' ), '2.07' );
 		}
 
 		return $time;
