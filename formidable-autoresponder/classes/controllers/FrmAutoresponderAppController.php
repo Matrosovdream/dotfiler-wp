@@ -415,13 +415,16 @@ class FrmAutoresponderAppController {
 			return;
 		}
 
+		// Default to true
 		if ( $entry->is_draft && ! in_array( 'draft', $action->post_content['event'], true ) ) {
-			return;
+			$should_trigger = false;
 		}
 
-		// Apply filter to the action, CUSTOM UPDATE
-		if( !apply_filters( 'formidable_autoresponder_should_trigger', $should_trigger=true, $entry, $action ) ) {
-			return ;
+		// Apply filter to the action
+		$should_trigger = apply_filters( 'formidable_autoresponder_should_trigger', $should_trigger, $entry, $action );
+
+		if ( ! $should_trigger ) {
+			return;
 		}
 
 		$reference_date = self::get_trigger_date( compact( 'entry', 'action', 'autoresponder' ) );
